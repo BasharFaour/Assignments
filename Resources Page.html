@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #000;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-effects {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb1 {
+            width: 500px;
+            height: 500px;
+            background: #3F07E0;
+            top: -250px;
+            left: -200px;
+            animation-delay: -5s;
+        }
+
+        .orb2 {
+            width: 600px;
+            height: 600px;
+            background: #AA02E1;
+            bottom: -300px;
+            right: -200px;
+            animation-delay: -10s;
+        }
+
+        .orb3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(45deg, #3F07E0, #AA02E1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -15s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(50px, 50px); }
+            50% { transform: translate(-50px, 100px); }
+            75% { transform: translate(100px, -50px); }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container {
+            position: relative;
+        }
+
+        .logo-placeholder {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #3F07E0, #AA02E1);
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
+        .project-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #3F07E0, #AA02E1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-left: 1rem;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3F07E0, #AA02E1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            transform: translateX(0);
+        }
+
+        .auth-button {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .signin {
+            background: linear-gradient(45deg, #3F07E0, #AA02E1);
+            border: none;
+            color: white;
+        }
+
+        .signin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(63, 7, 224, 0.5);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            padding: 4rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glowing-border {
+            padding: 3px;
+            background: linear-gradient(45deg, #3F07E0, #AA02E1);
+            border-radius: 20px;
+        }
+
+        .content {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 3rem;
+            border-radius: 18px;
+            max-width: 1000px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #3F07E0, #AA02E1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: #AA02E1;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            color: #3F07E0;
+        }
+
+        p {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+        }
+
+        .personality-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .personality-card {
+            background: rgba(63, 7, 224, 0.1);
+            border: 1px solid rgba(170, 2, 225, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .personality-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(170, 2, 225, 0.2);
+        }
+
+        .personality-card h4 {
+            color: #AA02E1;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .personality-card p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .personality-types {
+                grid-template-columns: 1fr;
+            }
+        }
+        .personality-card {
+            background: rgba(63, 7, 224, 0.1);
+            border: 1px solid rgba(170, 2, 225, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .personality-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(170, 2, 225, 0.2);
+            background: rgba(63, 7, 224, 0.2);
+        }
+        
+        .personality-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3F07E0, #AA02E1);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .personality-card:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .personality-card:active {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(170, 2, 225, 0.3);
+        }
+        .characteristics-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: rgba(63, 7, 224, 0.05);
+        }
+    
+        .characteristics-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+    
+        .characteristics-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-right: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+    
+        .characteristics-list li:before {
+            content: '•';
+            color: #AA02E1;
+            margin-right: 0.5rem;
+        }
+    
+                /* Modal styles */
+                .modal-overlay {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    z-index: 1000;
+                    backdrop-filter: blur(5px);
+                }
+        
+                .modal {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, rgba(63, 7, 224, 0.1), rgba(170, 2, 225, 0.1));
+                    border: 1px solid rgba(170, 2, 225, 0.3);
+                    border-radius: 20px;
+                    padding: 2rem;
+                    width: 90%;
+                    max-width: 600px;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    z-index: 1001;
+                    color: white;
+                    box-shadow: 0 0 30px rgba(170, 2, 225, 0.3);
+                }
+        
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1.5rem;
+                    padding-bottom: 1rem;
+                    border-bottom: 1px solid rgba(170, 2, 225, 0.3);
+                }
+        
+                .modal-title {
+                    font-size: 1.5rem;
+                    color: #AA02E1;
+                    margin: 0;
+                }
+        
+                .close-button {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: background-color 0.3s;
+                }
+        
+                .close-button:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+        
+                .modal-content {
+                    display: grid;
+                    gap: 2rem;
+                }
+        
+                .language-section {
+                    padding: 1rem;
+                    border-radius: 10px;
+                    background: rgba(0, 0, 0, 0.2);
+                }
+        
+                .language-section h3 {
+                    color: #AA02E1;
+                    margin-bottom: 1rem;
+                }
+        
+                .traits-list {
+                    list-style: none;
+                    padding: 0;
+                }
+        
+                .traits-list li {
+                    margin-bottom: 0.5rem;
+                    padding-left: 1.5rem;
+                    position: relative;
+                }
+        
+                .traits-list li::before {
+                    content: '•';
+                    color: #3F07E0;
+                    position: absolute;
+                    left: 0;
+                }
+        
+                /* Animation for modal */
+                @keyframes modalFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translate(-50%, -48%);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+        
+                .modal.active {
+                    animation: modalFadeIn 0.3s ease forwards;
+                }
+    </style>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="gradient-orb orb1"></div>
+        <div class="gradient-orb orb2"></div>
+        <div class="gradient-orb orb3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <div class="logo-placeholder"></div>
+            </div>
+            <span class="project-name">NeuroNexus</span>
+        </div>
+        
+        <div class="nav-center">
+            
+            <button class="nav-link" onclick="window.location.href='/main2';">HOME</button>
+        </div>
+        
+    </nav>
+
+    <main>
+        <div class="content-wrapper">
+            <div class="glowing-border">
+                <div class="content">
+                    <h1>Understanding Personality Insights</h1>
+                    
+                    <p>Personality plays a crucial role in shaping how we think, feel, and interact with the world around us. At NeuroNexus, we use advanced personality insights to create more effective and harmonious teams.</p>
+
+                    <h2>The Big 5 Personality Traits</h2>
+                    <p>The Big 5 model, also known as the Five-Factor Model (FFM), identifies five broad traits that define human personality:</p>
+                    <ul>
+                        <li>Openness to Experience: Reflects creativity and willingness to explore new ideas.</li>
+                        <li>Conscientiousness: Measures organization, dependability, and self-discipline.</li>
+                        <li>Extraversion: Captures energy levels and sociability.</li>
+                        <li>Agreeableness: Represents kindness, empathy, and cooperation.</li>
+                        <li>Neuroticism: Indicates emotional stability and sensitivity to stress.</li>
+                    </ul>
+
+                    <h2>The 16 Personality Types (MBTI)</h2>
+                    <p>The Myers-Briggs Type Indicator (MBTI) categorizes people into 16 unique personality types based on four key dichotomies:</p>
+                    <ul>
+                        <li>Introversion (I) vs. Extraversion (E): Focuses on where people draw their energy.</li>
+                        <li>Sensing (S) vs. Intuition (N): Describes how people process information.</li>
+                        <li>Thinking (T) vs. Feeling (F): Explains decision-making preferences.</li>
+                        <li>Judging (J) vs. Perceiving (P): Indicates how people approach structure and flexibility in life.</li>
+                    </ul>
+
+                    <h3>The 16 Personality Types at a Glance</h3>
+                    <div class="personality-types">
+                        <div class="personality-card" onclick="handleCardClick(event, 'ISTJ')">
+                            <h4>ISTJ - The Inspector</h4>
+                            <p>Organized and practical, they value tradition and efficiency.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ISFJ - The Protector</h4>
+                            <p>Loyal and caring, they work to create harmony in their environment.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>INFJ - The Advocate</h4>
+                            <p>Idealistic and empathetic, they strive to make a positive impact.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>INTJ - The Architect</h4>
+                            <p>Strategic and analytical, they excel at planning and innovation.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ISTP - The Virtuoso</h4>
+                            <p>Adaptable and resourceful, they love solving practical problems.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ISFP - The Adventurer</h4>
+                            <p>Sensitive and creative, they enjoy exploring beauty and personal expression.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>INFP - The Mediator</h4>
+                            <p>Compassionate and introspective, they seek meaning and purpose.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>INTP - The Thinker</h4>
+                            <p>Curious and logical, they love exploring ideas and concepts.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ESTP - The Entrepreneur</h4>
+                            <p>Energetic and adventurous, they thrive in dynamic environments.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ESFP - The Entertainer</h4>
+                            <p>Fun-loving and sociable, they bring excitement wherever they go.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ENFP - The Campaigner</h4>
+                            <p>Enthusiastic and imaginative, they inspire others with their creativity.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ENTP - The Debater</h4>
+                            <p>Bold and innovative, they challenge norms and explore possibilities.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ESTJ - The Executive</h4>
+                            <p>Organized and decisive, they excel in leadership roles.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ESFJ - The Consul</h4>
+                            <p>Caring and sociable, they focus on building relationships and supporting others.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ENFJ - The Protagonist</h4>
+                            <p>Charismatic and empathetic, they are natural leaders who motivate others.</p>
+                        </div>
+                        <div class="personality-card">
+                            <h4>ENTJ - The Commander</h4>
+                            <p>Confident and ambitious, they thrive on tackling challenges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Template -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title"></h2>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="language-section">
+                    <h3>English Description</h3>
+                    <div class="english-content"></div>
+                </div>
+                <div class="language-section">
+                    <h3>الوصف بالعربية</h3>
+                    <div class="arabic-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const personalityDetails = {
+            'ISTJ': {
+                english: {
+                    title: 'ISTJ - The Inspector',
+                    description: 'ISTJs are responsible organizers, driven to create and enforce order within systems and institutions. They are neat and orderly, inside and out, and tend to have a procedure for everything they do.',
+                    traits: [
+                        'Practical and fact-minded',
+                        'Reliable and systematic',
+                        'Value tradition and loyalty',
+                        'Excellent organizational abilities',
+                        'Strong sense of duty'
+                    ]
+                },
+                arabic: {
+                    title: 'ISTJ - المفتش',
+                    description: 'شخصية ISTJ هي شخصية منظمة ومسؤولة، تسعى لخلق وتطبيق النظام في الأنظمة والمؤسسات. يتميزون بالترتيب والنظام، ولديهم إجراءات محددة لكل ما يقومون به.',
+                    traits: [
+                        'عمليون ويهتمون بالحقائق',
+                        'يمكن الاعتماد عليهم ومنهجيون',
+                        'يقدرون التقاليد والولاء',
+                        'قدرات تنظيمية ممتازة',
+                        'لديهم حس قوي بالواجب'
+                    ]
+                }
+            },
+            'ISFJ': {
+                english: {
+                    title: 'ISFJ - The Protector',
+                    description: 'ISFJs are industrious caretakers, loyal to traditions and organizations. They are practical, compassionate, and caring, and are motivated to provide for others and protect them from the dangers of life.',
+                    traits: [
+                        'Warm and compassionate',
+                        'Highly detailed and organized',
+                        'Great memory for details',
+                        'Patient and devoted',
+                        'Excellent caregivers'
+                    ]
+                },
+                arabic: {
+                    title: 'ISFJ - الحامي',
+                    description: 'شخصية ISFJ هي شخصية مجتهدة وراعية، مخلصة للتقاليد والمنظمات. هم عمليون، رحيمون ومهتمون، ويسعون لتوفير الرعاية للآخرين وحمايتهم من مخاطر الحياة.',
+                    traits: [
+                        'دافئون وعطوفون',
+                        'منظمون ويهتمون بالتفاصيل',
+                        'ذاكرة قوية للتفاصيل',
+                        'صبورون ومخلصون',
+                        'مقدمو رعاية ممتازون'
+                    ]
+                }
+            },
+            'INFJ': {
+                english: {
+                    title: 'INFJ - The Advocate',
+                    description: 'INFJs are quiet, imaginative idealists who seek to make the world a better place. They have a deep sense of personal values and a strong desire to help others achieve their potential.',
+                    traits: [
+                        'Creative and insightful',
+                        'Deep sense of idealism and morality',
+                        'Natural counselors and listeners',
+                        'Highly intuitive and perceptive',
+                        'Values deep, authentic relationships'
+                    ]
+                },
+                arabic: {
+                    title: 'INFJ - المناصر',
+                    description: 'شخصية INFJ هادئة وخيالية ومثالية تسعى لجعل العالم مكانًا أفضل. لديهم إحساس عميق بالقيم الشخصية ورغبة قوية في مساعدة الآخرين على تحقيق إمكاناتهم.',
+                    traits: [
+                        'مبدعون وذوو بصيرة',
+                        'لديهم إحساس عميق بالمثالية والأخلاق',
+                        'مستشارون ومستمعون طبيعيون',
+                        'حدس وإدراك عالي',
+                        'يقدرون العلاقات العميقة والأصيلة'
+                    ]
+                }
+            },
+            'INTJ': {
+                english: {
+                    title: 'INTJ - The Architect',
+                    description: 'INTJs are analytical problem-solvers who seek to understand complex systems and develop innovative solutions. They are strategic thinkers with a drive for continuous improvement.',
+                    traits: [
+                        'Strategic and long-term planners',
+                        'Independent and decisive',
+                        'High standards and analytical minds',
+                        'Innovative and creative problem solvers',
+                        'Values knowledge and competence'
+                    ]
+                },
+                arabic: {
+                    title: 'INTJ - المهندس',
+                    description: 'شخصية INTJ محللة وحلالة للمشكلات تسعى لفهم الأنظمة المعقدة وتطوير حلول مبتكرة. هم مفكرون استراتيجيون لديهم دافع للتحسين المستمر.',
+                    traits: [
+                        'مخططون استراتيجيون على المدى الطويل',
+                        'مستقلون وحاسمون',
+                        'معايير عالية وعقول تحليلية',
+                        'مبتكرون في حل المشكلات',
+                        'يقدرون المعرفة والكفاءة'
+                    ]
+                }
+            },
+            'ISTP': {
+                english: {
+                    title: 'ISTP - The Virtuoso',
+                    description: 'ISTPs are practical experimenters who excel at understanding how mechanical things work. They are adaptable problem-solvers who enjoy exploring with their hands and eyes.',
+                    traits: [
+                        'Skilled at working with their hands',
+                        'Spontaneous and adaptable',
+                        'Logical and practical',
+                        'Independent problem solvers',
+                        'Enjoys exploring and analyzing'
+                    ]
+                },
+                arabic: {
+                    title: 'ISTP - الحرفي',
+                    description: 'شخصية ISTP عملية وتجريبية تتفوق في فهم كيفية عمل الأشياء الميكانيكية. هم محللون متكيفون يستمتعون باستكشاف الأشياء بأيديهم وعيونهم.',
+                    traits: [
+                        'ماهرون في العمل اليدوي',
+                        'عفويون ومتكيفون',
+                        'منطقيون وعمليون',
+                        'مستقلون في حل المشكلات',
+                        'يستمتعون بالاستكشاف والتحليل'
+                    ]
+                }
+            },
+            'ISFP': {
+                english: {
+                    title: 'ISFP - The Adventurer',
+                    description: 'ISFPs are artistic explorers who live in the moment and seek out new experiences. They are gentle, sensitive individuals who enjoy creating beautiful things and experiences.',
+                    traits: [
+                        'Artistic and creative',
+                        'Lives in the present moment',
+                        'Flexible and spontaneous',
+                        'Sensitive to others\' feelings',
+                        'Strong aesthetic appreciation'
+                    ]
+                },
+                arabic: {
+                    title: 'ISFP - المغامر',
+                    description: 'شخصية ISFP فنية ومستكشفة تعيش اللحظة وتبحث عن تجارب جديدة. هم أشخاص لطيفون وحساسون يستمتعون بخلق الأشياء والتجارب الجميلة.',
+                    traits: [
+                        'فنيون ومبدعون',
+                        'يعيشون اللحظة الحاضرة',
+                        'مرنون وعفويون',
+                        'حساسون لمشاعر الآخرين',
+                        'تقدير قوي للجماليات'
+                    ]
+                }
+            },
+            'INFP': {
+                english: {
+                    title: 'INFP - The Mediator',
+                    description: 'INFPs are idealistic dreamers with strong personal values. They seek authenticity and meaning in life, often dedicating themselves to helping others and making the world better.',
+                    traits: [
+                        'Empathetic and caring',
+                        'Strong personal values',
+                        'Creative and imaginative',
+                        'Seeks harmony and authenticity',
+                        'Deep appreciation for arts and beauty'
+                    ]
+                },
+                arabic: {
+                    title: 'INFP - الوسيط',
+                    description: 'شخصية INFP حالمة ومثالية ذات قيم شخصية قوية. يبحثون عن الأصالة والمعنى في الحياة، وغالباً ما يكرسون أنفسهم لمساعدة الآخرين وجعل العالم أفضل.',
+                    traits: [
+                        'متعاطفون ومهتمون',
+                        'قيم شخصية قوية',
+                        'مبدعون وخياليون',
+                        'يبحثون عن التناغم والأصالة',
+                        'تقدير عميق للفنون والجمال'
+                    ]
+                }
+            },
+            'INTP': {
+                english: {
+                    title: 'INTP - The Logician',
+                    description: 'INTPs are innovative inventors with an unquenchable thirst for knowledge. They live in a world of theoretical possibilities and enjoy complex problem solving.',
+                    traits: [
+                        'Analytical and logical',
+                        'Original and inventive thinkers',
+                        'Values precision in communication',
+                        'Independent and curious',
+                        'Enjoys theoretical and abstract concepts'
+                    ]
+                },
+                arabic: {
+                    title: 'INTP - المنطقي',
+                    description: 'شخصية INTP مخترعة ومبتكرة لديها عطش لا يروى للمعرفة. يعيشون في عالم من الاحتمالات النظرية ويستمتعون بحل المشكلات المعقدة.',
+                    traits: [
+                        'تحليليون ومنطقيون',
+                        'مفكرون أصليون ومبتكرون',
+                        'يقدرون الدقة في التواصل',
+                        'مستقلون وفضوليون',
+                        'يستمتعون بالمفاهيم النظرية والمجردة'
+                    ]
+                }
+            },
+            'ESTP': {
+                english: {
+                    title: 'ESTP - The Entrepreneur',
+                    description: 'ESTPs are energetic thrill-seekers who live in the moment. They are quick problem solvers who enjoy taking risks and making things happen.',
+                    traits: [
+                        'Energetic and action-oriented',
+                        'Adaptable and resourceful',
+                        'Good at reading people',
+                        'Risk-takers and spontaneous',
+                        'Natural negotiators'
+                    ]
+                },
+                arabic: {
+                    title: 'ESTP - رائد الأعمال',
+                    description: 'شخصية ESTP نشيطة وباحثة عن الإثارة تعيش اللحظة. هم سريعون في حل المشكلات ويستمتعون بالمخاطرة وتحقيق الأشياء.',
+                    traits: [
+                        'نشيطون وموجهون نحو العمل',
+                        'متكيفون وذوو موارد',
+                        'جيدون في قراءة الناس',
+                        'مغامرون وعفويون',
+                        'مفاوضون طبيعيون'
+                    ]
+                }
+            },
+            'ESFP': {
+                english: {
+                    title: 'ESFP - The Entertainer',
+                    description: 'ESFPs are vivacious entertainers who charm and engage those around them. They live for the moment and are enthusiastic, social butterflies who love being center stage.',
+                    traits: [
+                        'Spontaneous and energetic',
+                        'Cheerful and optimistic',
+                        'Great people skills',
+                        'Practical and resourceful',
+                        'Lives in the moment'
+                    ]
+                },
+                arabic: {
+                    title: 'ESFP - المسلي',
+                    description: 'شخصية ESFP مرحة وممتعة تسحر وتجذب من حولها. يعيشون اللحظة وهم فراشات اجتماعية متحمسة تحب أن تكون في مركز الاهتمام.',
+                    traits: [
+                        'عفويون ونشيطون',
+                        'مرحون ومتفائلون',
+                        'مهارات تواصل رائعة مع الناس',
+                        'عمليون وذوو موارد',
+                        'يعيشون اللحظة'
+                    ]
+                }
+            },
+            'ENFP': {
+                english: {
+                    title: 'ENFP - The Campaigner',
+                    description: 'ENFPs are enthusiastic innovators, always seeing new possibilities and potential in the world around them. They are charismatic and inspiring communicators.',
+                    traits: [
+                        'Imaginative and enthusiastic',
+                        'Excellent communicators',
+                        'Warm and empathetic',
+                        'Values creativity and authenticity',
+                        'Sees possibilities everywhere'
+                    ]
+                },
+                arabic: {
+                    title: 'ENFP - المناضل',
+                    description: 'شخصية ENFP مبتكرة ومتحمسة، ترى دائماً إمكانيات وفرص جديدة في العالم من حولها. هم متواصلون كاريزميون وملهمون.',
+                    traits: [
+                        'خياليون ومتحمسون',
+                        'متواصلون ممتازون',
+                        'دافئون ومتعاطفون',
+                        'يقدرون الإبداع والأصالة',
+                        'يرون الإمكانيات في كل مكان'
+                    ]
+                }
+            },
+            'ENTP': {
+                english: {
+                    title: 'ENTP - The Debater',
+                    description: 'ENTPs are clever and curious thinkers who love intellectual discussions. They enjoy debating ideas and finding creative solutions to complex problems.',
+                    traits: [
+                        'Quick thinkers and debaters',
+                        'Innovative problem solvers',
+                        'Enthusiastic and energetic',
+                        'Values knowledge and competence',
+                        'Enjoys intellectual discussions'
+                    ]
+                },
+                arabic: {
+                    title: 'ENTP - المحاور',
+                    description: 'شخصية ENTP ذكية وفضولية تحب النقاشات الفكرية. يستمتعون بمناقشة الأفكار وإيجاد حلول إبداعية للمشكلات المعقدة.',
+                    traits: [
+                        'مفكرون سريعون ومحاورون',
+                        'مبتكرون في حل المشكلات',
+                        'متحمسون ونشيطون',
+                        'يقدرون المعرفة والكفاءة',
+                        'يستمتعون بالنقاشات الفكرية'
+                    ]
+                }
+            },
+            'ESTJ': {
+                english: {
+                    title: 'ESTJ - The Executive',
+                    description: 'ESTJs are practical organizers who value tradition and order. They are efficient administrators who excel at creating and maintaining systems and procedures.',
+                    traits: [
+                        'Organized and efficient',
+                        'Strong leadership abilities',
+                        'Dedicated and reliable',
+                        'Values tradition and order',
+                        'Clear communicators'
+                    ]
+                },
+                arabic: {
+                    title: 'ESTJ - التنفيذي',
+                    description: 'شخصية ESTJ منظمة وعملية تقدر التقاليد والنظام. هم إداريون أكفاء يتفوقون في إنشاء وصيانة الأنظمة والإجراءات.',
+                    traits: [
+                        'منظمون وفعالون',
+                        'قدرات قيادية قوية',
+                        'مخلصون ويعتمد عليهم',
+                        'يقدرون التقاليد والنظام',
+                        'متواصلون واضحون'
+                    ]
+        };
+    }
+}
+        
+        function showModal(type) {
+            const modal = document.querySelector('.modal');
+            const overlay = document.getElementById('modalOverlay');
+            const details = personalityDetails[type];
+
+            if (!details) return;
+
+            // Update modal content
+            modal.querySelector('.modal-title').textContent = details.english.title;
+            
+            const englishContent = modal.querySelector('.english-content');
+            const arabicContent = modal.querySelector('.arabic-content');
+            
+            englishContent.innerHTML = `
+                <p>${details.english.description}</p>
+                <h4>Key Traits:</h4>
+                <ul class="traits-list">
+                    ${details.english.traits.map(trait => `<li>${trait}</li>`).join('')}
+                </ul>
+            `;
+            
+            arabicContent.innerHTML = `
+                <p>${details.arabic.description}</p>
+                <h4>السمات الرئيسية:</h4>
+                <ul class="traits-list">
+                    ${details.arabic.traits.map(trait => `<li>${trait}</li>`).join('')}
+                </ul>
+            `;
+
+            // Show modal
+            overlay.style.display = 'block';
+            modal.classList.add('active');
+        }
+
+        // Close modal when clicking the close button or outside the modal
+        document.querySelector('.close-button').addEventListener('click', () => {
+            document.getElementById('modalOverlay').style.display = 'none';
+        });
+
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalOverlay')) {
+                document.getElementById('modalOverlay').style.display = 'none';
+            }
+        });
+    // Animation for background orbs
+    document.addEventListener('mousemove', (e) => {
+        const orbs = document.querySelectorAll('.gradient-orb');
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+
+        orbs.forEach((orb, index) => {
+            const speed = (index + 1) * 20;
+            orb.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+        });
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+        // إضافة مستمعي النقر لجميع البطاقات
+        document.querySelectorAll('.personality-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const type = this.querySelector('h4').textContent.split(' - ')[0];
+                openModal(type);
+            });
+        });
+    });
+    function handleCardClick(event, type) {
+        // Create ripple effect
+        const card = event.currentTarget;
+        const ripple = document.createElement('span');
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.classList.add('ripple');
+        
+        card.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+            // Here you can add navigation or modal opening logic
+            console.log(`Clicked ${type} personality type`);
+        }, 600);
+    }
+
+</script>
+</body>
+</html>
